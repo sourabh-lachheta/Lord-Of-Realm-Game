@@ -23,7 +23,6 @@ public class StoryScene {
         this.id = id;
         this.storyText = storyText;
         this.choices = new ArrayList<>();
-
     }
 
     public void addChoice(Choice choice){

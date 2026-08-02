@@ -1,3 +1,18 @@
+
+
+/*
+  -> represent the main game window.
+  -> responsible only for displaying the user interface.
+  -> forwarding user actions to the game logic.
+*/
+
+
+
+
+
+
+
+
 package ui;
 import javax.swing.*;
 import java.awt.*;
@@ -104,33 +119,7 @@ public class GameWindow extends JFrame {
         //story panel....
         storyPanel = new JPanel();
         storyTextArea = new JTextArea();
-        storyTextArea.setText(
-                "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent...\n" + "shkahldla\n"
-                        + "hlalshlaj\n" + "hdkaslfa\n" + "sdlha" + "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..." + "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..."+ "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..." +
-                        "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..." +
-                        "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..."+
-                        "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..."+
-                        "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..."+
-                        "You slowly open your eyes.\n\n" +
-                        "A cold wind brushes against your face.\n\n" +
-                        "Everything around you is silent..."
-        );
+
 
         storyScrollPane = new JScrollPane(storyTextArea);
         storyTextArea.setEditable(false);
@@ -139,10 +128,10 @@ public class GameWindow extends JFrame {
 
         //choice panel...
         choicePanel = new JPanel();
-        choice1Button = new JButton("Look Around");
-        choice2Button = new JButton("Stand up");
-        choice3Button = new JButton("check Body");
-        choice4Button = new JButton("Close Eyes");
+        choice1Button = new JButton();
+        choice2Button = new JButton();
+        choice3Button = new JButton();
+        choice4Button = new JButton();
 
     }
 
@@ -153,6 +142,35 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+
+
+    public void setStoryText(String text){
+        storyTextArea.setText(text);
+    }
+
+    public void setChoices(String c1, String c2, String c3, String c4){
+        choice1Button.setText(c1);
+        choice2Button.setText(c2);
+        choice3Button.setText(c3);
+        choice4Button.setText(c4);
+    }
+
+    public void update(int hp){
+        hpLabel.setText("HP : " + hp + "/100");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public void showWindow(){

@@ -11,7 +11,7 @@ package story;
 
 public class Choice {
     private String text;
-    private StoryScene nextScene;
+   // private StoryScene nextScene;
     private int nextSceneId;
 
 
@@ -21,7 +21,7 @@ public class Choice {
 
 
     }
-    public int getnextSceneId(){
+    public int getNextSceneId(){
         return nextSceneId;
 
     }

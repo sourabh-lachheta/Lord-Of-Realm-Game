@@ -20,17 +20,21 @@ public class StoryManager {
         currentScene = scenes.get(startSceneId);
 
     }
-
-
-    public void selectChoice(){
+    
+    public void selectChoice(int choiceIendex){
+        Choice selectedChoice = currentScene.getChoices().get(choiceIendex);
+        int nextSceneId = selectedChoice.getNextSceneId();
+        goToScene(nextSceneId);
 
     }
 
-    public void getCurrentScene(){
+    public StoryScene getCurrentScene(){
+        return currentScene;
 
     }
 
     private void goToScene(int sceneId){
+        currentScene = scenes.get(sceneId);
 
     }
 

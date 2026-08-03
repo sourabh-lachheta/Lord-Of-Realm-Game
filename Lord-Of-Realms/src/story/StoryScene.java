@@ -37,7 +37,7 @@ public class StoryScene {
         return storyText;
     }
 
-    public List<Choice> getChoice(){
+    public List<Choice> getChoices(){
         return choices;
     }
 

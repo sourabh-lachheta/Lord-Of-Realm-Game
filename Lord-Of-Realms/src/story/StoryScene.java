@@ -19,7 +19,7 @@ public class StoryScene {
     private List<Choice> choices;
 
 
-    public void StoryScene(int id ,String storyText){
+    public  StoryScene(int id ,String storyText){
         this.id = id;
         this.storyText = storyText;
         this.choices = new ArrayList<>();

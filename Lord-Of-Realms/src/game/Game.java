@@ -1,15 +1,19 @@
 package game;
 
+import story.StoryManager;
 import ui.GameWindow; // Getting Access from Package
 
 
 public class Game {
 
     private GameWindow gameWindow;
+    private StoryManager storyManager;
 
 
     public Game(){
-        gameWindow = new GameWindow();
+        storyManager = new StoryManager();
+        gameWindow = new GameWindow(storyManager);
+
 
     }
 

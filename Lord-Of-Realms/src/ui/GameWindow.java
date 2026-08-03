@@ -14,8 +14,13 @@
 
 
 package ui;
+import story.Choice;
+import story.StoryManager;
+import story.StoryScene;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GameWindow extends JFrame {
     private static final String GAME_TITTLE = "LORD OF REALMS";
@@ -46,10 +51,14 @@ public class GameWindow extends JFrame {
     private JButton choice3Button;
     private JButton choice4Button;
 
+    private StoryManager storyManager;
 
+    public GameWindow(StoryManager storyManager){
+        this.storyManager = storyManager;
+        this.storyManager.startStory(1);
 
-    public GameWindow(){
-        initialize(); // Actual window Frame
+        initialize();
+        updateScene();// Actual window Frame
     }
 
     // Details of window
@@ -62,6 +71,26 @@ public class GameWindow extends JFrame {
 
 
     private void registerListeners() {
+
+        choice1Button.addActionListener( e->{
+            storyManager.selectChoice(0);
+            updateScene();
+        });
+
+        choice2Button.addActionListener( e->{
+            storyManager.selectChoice(1);
+            updateScene();
+        });
+
+        choice3Button.addActionListener( e->{
+            storyManager.selectChoice(2);
+            updateScene();
+        });
+
+        choice4Button.addActionListener( e->{
+            storyManager.selectChoice(3);
+            updateScene();
+        });
 
     }
 
@@ -119,6 +148,7 @@ public class GameWindow extends JFrame {
         //story panel....
         storyPanel = new JPanel();
         storyTextArea = new JTextArea();
+        storyTextArea.setFont(new Font("GC Omega", Font.BOLD,20));
 
 
         storyScrollPane = new JScrollPane(storyTextArea);
@@ -148,14 +178,35 @@ public class GameWindow extends JFrame {
         storyTextArea.setText(text);
     }
 
-    public void setChoices(String c1, String c2, String c3, String c4){
-        choice1Button.setText(c1);
-        choice2Button.setText(c2);
-        choice3Button.setText(c3);
-        choice4Button.setText(c4);
+    public void setChoices(List<Choice> choices){
+        JButton[] buttons = {
+                choice1Button,
+                choice2Button,
+                choice3Button,
+                choice4Button
+
+        };
+
+        for(int i = 0; i < buttons.length; i++){
+            if(i < choices.size()){
+                buttons[i].setText(choices.get(i).getText());
+                buttons[i].setVisible(true);
+            }else{
+                buttons[i].setVisible(false);
+            }
+        }
     }
 
-    public void update(int hp){
+    private void updateScene() {
+
+        StoryScene scene = storyManager.getCurrentScene();
+
+        setStoryText(scene.getStoryText());
+        setChoices(scene.getChoices());
+
+    }
+
+    public void updateHealth(int hp){
         hpLabel.setText("HP : " + hp + "/100");
     }
 

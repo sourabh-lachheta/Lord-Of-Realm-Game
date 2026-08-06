@@ -14,6 +14,7 @@
 
 
 package ui;
+import player.Player;
 import story.Choice;
 import story.StoryManager;
 import story.StoryScene;
@@ -51,13 +52,16 @@ public class GameWindow extends JFrame {
     private JButton choice3Button;
     private JButton choice4Button;
 
+    private Player player;
     private StoryManager storyManager;
 
-    public GameWindow(StoryManager storyManager){
+    public GameWindow(Player player, StoryManager storyManager){
+        this.player = player;
         this.storyManager = storyManager;
         this.storyManager.startStory(1);
 
         initialize();
+        updatePlayerInfo();
         updateScene();// Actual window Frame
     }
 
@@ -139,11 +143,11 @@ public class GameWindow extends JFrame {
 
         //status panel...
         statusPanel = new JPanel();
-        nameLabel = new JLabel("Name : Unknown    ");
-        realmLabel = new JLabel("Realm : Mortal    ");
-        hpLabel = new JLabel("HP : 100/100    ");
-        qiLabel = new JLabel("Qi : 0/100    ");
-        expLabel = new JLabel("EXP : 0");
+        nameLabel = new JLabel();
+        realmLabel = new JLabel();
+        hpLabel = new JLabel();
+        qiLabel = new JLabel();
+        expLabel = new JLabel();
 
         //story panel....
         storyPanel = new JPanel();
@@ -209,6 +213,16 @@ public class GameWindow extends JFrame {
     public void updateHealth(int hp){
         hpLabel.setText("HP : " + hp + "/100");
     }
+
+    private void updatePlayerInfo(){
+        nameLabel.setText(("Name : " + player.getName()));
+        realmLabel.setText("Realm : "+ player.getRealmName());
+        hpLabel.setText("HP : "+ player.getHealthText());
+        qiLabel.setText("Qi : " + player.getQiText());
+        expLabel.setText("EXp : " + player.getExp());
+    }
+
+
 
 
 

@@ -1,5 +1,6 @@
 package game;
 
+import inventory.Item;
 import player.Player;
 import story.StoryManager;
 import ui.GameWindow; // Getting Access from Package
@@ -14,7 +15,10 @@ public class Game {
 
     public Game(){
         player = new Player();
-        storyManager = new StoryManager();
+        //player.getInventory().addItem(new Item("rusty sword"));
+       //player.getInventory().showItems();
+        System.out.println(player.getInventory().getItemsText());
+        storyManager = new StoryManager(player);
         gameWindow = new GameWindow(player,storyManager);
 
 

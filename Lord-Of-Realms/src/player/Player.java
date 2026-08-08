@@ -1,21 +1,23 @@
 package player;
 
+import inventory.Inventory;
+import inventory.Item;
+
 public class Player {
     private String name;
 
     private int hp;
     private int maxHp;
-
     private int qi;
     private int maxQi;
-
     private int exp;
-
     private int realm;
+
+    private Inventory inventory;
 
     public Player(){
 
-        name = "Fang Yuan";
+        name = "User";
 
         maxHp = 100;
         hp = maxHp;
@@ -25,6 +27,9 @@ public class Player {
 
         exp = 0;
         realm = 1;
+
+        inventory = new Inventory();
+
     }
 
     public String getName(){
@@ -59,8 +64,6 @@ public class Player {
         }
     }
 
-
-
     public void takeDamage(){
 
     }
@@ -78,6 +81,14 @@ public class Player {
     }
     public void breakthrough(){
 
+    }
+
+    public Inventory getInventory(){
+        return inventory;
+    }
+
+    public void addItem(Item item){
+        inventory.addItem(item);
     }
 
 

@@ -205,6 +205,8 @@ public class GameWindow extends JFrame {
 
         StoryScene scene = storyManager.getCurrentScene();
 
+
+
         setStoryText(scene.getStoryText());
         setChoices(scene.getChoices());
 

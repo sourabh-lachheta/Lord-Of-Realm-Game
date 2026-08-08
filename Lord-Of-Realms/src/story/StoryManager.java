@@ -1,17 +1,26 @@
 package story;
 
+
+
 import javax.swing.text.AsyncBoxView;
 import java.util.HashMap;
 import java.util.Map;
+
+import inventory.Item;
+import player.Player;
+
+
 
 
 public class StoryManager {
 
     private Map<Integer, StoryScene> scenes;
     private StoryScene currentScene;
+    private Player player;
 
-    public StoryManager(){
+    public StoryManager(Player player){
         scenes = new HashMap<>();
+        this.player= player;
         initializeStory();
     }
 
@@ -26,6 +35,13 @@ public class StoryManager {
 
     public void selectChoice(int choiceIendex){
         Choice selectedChoice = currentScene.getChoices().get(choiceIendex);
+
+        if(selectedChoice.getReward() != null){
+            player.addItem(selectedChoice.getReward());
+            
+
+        }
+
         int nextSceneId = selectedChoice.getNextSceneId();
         goToScene(nextSceneId);
 
@@ -62,7 +78,7 @@ public class StoryManager {
                 "Towering trees surround you. Nearby, you notice a broken sword half-buried in the soil"
         );
 
-        scene2.addChoice(new Choice("Pick up the sword",6));
+        scene2.addChoice(new Choice("Pick up the sword",6,new Item("Rusty Sword")));
         scene2.addChoice(new Choice("Return",1));
         scene2.addChoice(new Choice("Go Forward", 7));
         addScene(scene2);
@@ -92,7 +108,8 @@ public class StoryManager {
 
         StoryScene scene6 = new StoryScene(
                 6,
-                "you feel the dark aura form the sword, you have now weapon"
+                " you have now weapon"
+
         );
         scene6.addChoice(new Choice("swing the sword",9));
         scene6.addChoice(new Choice("Go Forward",7));

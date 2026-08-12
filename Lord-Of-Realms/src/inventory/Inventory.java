@@ -3,6 +3,7 @@ package inventory;
 import player.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -43,6 +44,28 @@ public class Inventory {
         }
 
         return text.toString();
+    }
+
+    public boolean hasItem(String itemName){
+        for(Item item : items){
+            if(item.getName().equals(itemName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeItem(String itemName){
+        Iterator<Item> iterator = items.iterator();
+
+        Item item = iterator.next();
+
+        if(item.getName().equals(itemName)){
+            iterator.remove();
+            return true;
+        }
+
+        return false;
     }
 
 }

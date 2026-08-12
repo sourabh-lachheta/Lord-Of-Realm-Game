@@ -52,6 +52,10 @@ public class GameWindow extends JFrame {
     private JButton choice3Button;
     private JButton choice4Button;
 
+
+    // Inventory.....
+    private JLabel inventoryLabel;
+
     private Player player;
     private StoryManager storyManager;
 
@@ -62,6 +66,7 @@ public class GameWindow extends JFrame {
 
         initialize();
         updatePlayerInfo();
+        updateInventory();
         updateScene();// Actual window Frame
     }
 
@@ -76,26 +81,22 @@ public class GameWindow extends JFrame {
 
     private void registerListeners() {
 
-        choice1Button.addActionListener( e->{
-            storyManager.selectChoice(0);
-            updateScene();
-        });
+        choice1Button.addActionListener( e-> handleChoice(0));
 
-        choice2Button.addActionListener( e->{
-            storyManager.selectChoice(1);
-            updateScene();
-        });
+        choice2Button.addActionListener(e -> handleChoice(1));
 
-        choice3Button.addActionListener( e->{
-            storyManager.selectChoice(2);
-            updateScene();
-        });
+        choice3Button.addActionListener( e-> handleChoice(2));
 
-        choice4Button.addActionListener( e->{
-            storyManager.selectChoice(3);
-            updateScene();
-        });
+        choice4Button.addActionListener( e-> handleChoice(3));
 
+    }
+
+    private void handleChoice(int choiceIndex){
+        storyManager.selectChoice(choiceIndex);
+
+        updateScene();
+        updateInventory();
+        updatePlayerInfo();
     }
 
 
@@ -123,6 +124,9 @@ public class GameWindow extends JFrame {
         expLabel.setFont(new Font("font",Font.PLAIN,16));
         statusPanel.add(expLabel);
 
+        inventoryLabel.setFont(new Font("font",Font.PLAIN,16));
+        statusPanel.add(inventoryLabel);
+
         // story panel...
         storyPanel.setLayout(new BorderLayout());
         storyPanel.add(storyScrollPane,BorderLayout.CENTER);
@@ -132,6 +136,8 @@ public class GameWindow extends JFrame {
         choicePanel.add(choice2Button);
         choicePanel.add(choice3Button);
         choicePanel.add(choice4Button);
+
+
 
     }
 
@@ -148,6 +154,8 @@ public class GameWindow extends JFrame {
         hpLabel = new JLabel();
         qiLabel = new JLabel();
         expLabel = new JLabel();
+
+        inventoryLabel = new JLabel("Inventory : Empty");
 
         //story panel....
         storyPanel = new JPanel();
@@ -166,6 +174,9 @@ public class GameWindow extends JFrame {
         choice2Button = new JButton();
         choice3Button = new JButton();
         choice4Button = new JButton();
+
+
+
 
     }
 
@@ -222,6 +233,15 @@ public class GameWindow extends JFrame {
         hpLabel.setText("HP : "+ player.getHealthText());
         qiLabel.setText("Qi : " + player.getQiText());
         expLabel.setText("EXp : " + player.getExp());
+    }
+
+    private void updateInventory(){
+
+        inventoryLabel.setText(
+                "<html>Inventory:<br>" +
+                player.getInventory().getItemsText().replace("\n","<br>") +
+                "</html>"
+        );
     }
 
 

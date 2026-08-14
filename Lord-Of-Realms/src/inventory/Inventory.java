@@ -5,32 +5,40 @@ import player.Player;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-
+import java.util.Map;
+import java.util.HashMap;
 
 
 public class Inventory {
-    private List<Item> items;
+    private Map<Item, Integer> items;
     private Player player;
 
     public Inventory(){
-        items = new ArrayList<>();
+        items = new HashMap<>();
     }
 
     public void addItem(Item item){
-        items.add(item);
+        if(items.containsKey(item)){
+            items.put(item, items.get(item) + 1);
+        }else{
+            items.put(item, 1);
+        }
     }
 
-    public List<Item> getItems(){
+   /*
+   public List<Item> getItems(){
         return items;
     }
+    */
 
-   /* public void showItems(){
+   /*
+    public void showItems(){
         for(Item item : items){
             System.out.println(.addItem(item));
             System.out.println(player.getInventory().getItemsText());
         }
-    }*/
+    }
+    */
 
     public String getItemsText(){
         if(items.isEmpty()){
@@ -39,33 +47,36 @@ public class Inventory {
 
         StringBuilder text = new StringBuilder();
 
-        for(Item item : items){
-            text.append(item.getName()).append("\n");
+        for(Map.Entry<Item, Integer> entry : items.entrySet()){
+            Item item = entry.getKey();
+            int quantity = entry.getValue();
+
+            text.append(item.getName())
+                    .append(" x ")
+                    .append(quantity)
+                    .append("\n");
         }
 
         return text.toString();
     }
 
-    public boolean hasItem(String itemName){
-        for(Item item : items){
-            if(item.getName().equals(itemName)){
-                return true;
-            }
-        }
-        return false;
+    public boolean hasItem(Item item){
+        return items.containsKey(item);
     }
 
-    public boolean removeItem(String itemName){
-        Iterator<Item> iterator = items.iterator();
-
-        Item item = iterator.next();
-
-        if(item.getName().equals(itemName)){
-            iterator.remove();
-            return true;
+    public boolean removeItem(Item item){
+       if(!(items.containsKey(item))){
+           return false;
         }
+        int quantity = items.get(item);
 
-        return false;
+       if(quantity > 1){
+           items.put(item, quantity-1);
+       }else{
+           items.remove(item);
+       }
+
+       return true;
     }
 
 }

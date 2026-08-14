@@ -91,12 +91,12 @@ public class Player {
         inventory.addItem(item);
     }
 
-    public boolean hasItem(String itemName){
-        return inventory.hasItem(itemName);
+    public boolean hasItem(Item item){
+        return inventory.hasItem(item);
     }
 
-    public boolean removeItem(String itemName){
-        return inventory.removeItem(itemName);
+    public boolean removeItem(Item item){
+        return inventory.removeItem(item);
     }
 
 

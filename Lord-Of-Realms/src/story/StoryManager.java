@@ -33,13 +33,13 @@ public class StoryManager {
 
     }
 
-    public void selectChoice(int choiceIendex){
-        Choice selectedChoice = currentScene.getChoices().get(choiceIendex);
+    public void selectChoice(int choiceIndex){
+        Choice selectedChoice = currentScene.getChoices().get(choiceIndex);
 
-        if(selectedChoice.getReward() != null){
-            player.addItem(selectedChoice.getReward());
-            
+        Item reward = selectedChoice.getReward();
 
+        if(reward != null){
+            player.addItem(reward);
         }
 
         int nextSceneId = selectedChoice.getNextSceneId();
@@ -95,7 +95,7 @@ public class StoryManager {
                 4,
                 "you are totally fine , but on your hand have little mark on it"
         );
-        scene4.addChoice(new Choice("touch the mark",8));
+        scene4.addChoice(new Choice("touch the mark",1));
         scene4.addChoice(new Choice("Look Around",2));
         addScene(scene4);
 
@@ -111,9 +111,30 @@ public class StoryManager {
                 " you have now weapon"
 
         );
-        scene6.addChoice(new Choice("swing the sword",9));
+        scene6.addChoice(new Choice("swing the sword",8));
         scene6.addChoice(new Choice("Go Forward",7));
         addScene(scene6);
+
+
+        StoryScene scene7 = new StoryScene(
+                7,
+                "you see herb"
+        );
+        Item herb = new Item("healing Herb");
+        scene7.addChoice(new Choice("Take the herb", 9,herb));
+        scene7.addChoice(new Choice("Go Forward", 10 ));
+        addScene(scene7);
+
+        StoryScene scene9 = new StoryScene(
+                9,
+                "you have healing herb"
+        );
+
+        scene9.addChoice(new Choice("use herb", 11));
+        scene9.addChoice(new Choice("Go Forward", 10 ));
+        addScene(scene9);
+
+
 
 
 

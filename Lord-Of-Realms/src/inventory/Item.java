@@ -3,9 +3,11 @@ package inventory;
 public class Item {
 
     private String name;
+    private boolean stackable;
 
-    public Item(String name){
+    public Item(String name, boolean stackable){
         this.name = name;
+        this.stackable = stackable;
     }
 
     public String getName(){
@@ -31,5 +33,9 @@ public class Item {
     @Override
     public int hashCode(){
         return name.hashCode();
+    }
+
+    public boolean isStackable(){
+        return stackable;
     }
 }

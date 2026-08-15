@@ -78,7 +78,7 @@ public class StoryManager {
                 "Towering trees surround you. Nearby, you notice a broken sword half-buried in the soil"
         );
 
-        scene2.addChoice(new Choice("Pick up the sword",6,new Item("Rusty Sword")));
+        scene2.addChoice(new Choice("Pick up the sword",6,new Item("Rusty Sword",false)));
         scene2.addChoice(new Choice("Return",1));
         scene2.addChoice(new Choice("Go Forward", 7));
         addScene(scene2);
@@ -120,7 +120,7 @@ public class StoryManager {
                 7,
                 "you see herb"
         );
-        Item herb = new Item("healing Herb");
+        Item herb = new Item("healing Herb",true);
         scene7.addChoice(new Choice("Take the herb", 9,herb));
         scene7.addChoice(new Choice("Go Forward", 10 ));
         addScene(scene7);
@@ -133,6 +133,27 @@ public class StoryManager {
         scene9.addChoice(new Choice("use herb", 11));
         scene9.addChoice(new Choice("Go Forward", 10 ));
         addScene(scene9);
+
+
+        StoryScene scene10 = new StoryScene(
+                10,
+                "found another healing item"
+        );
+
+        scene10.addChoice(new Choice("Take the herb", 12,herb));
+        scene10.addChoice(new Choice("Go Forward",13));
+        addScene(scene10);
+
+        StoryScene scene12 = new StoryScene(
+                12,
+                " another healing item added"
+        );
+
+       // scene10.addChoice(new Choice("Take the herb", 12,herb));
+        scene12.addChoice(new Choice("Go Forward",13));
+        addScene(scene12);
+
+
 
 
 

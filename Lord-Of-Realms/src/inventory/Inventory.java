@@ -10,19 +10,24 @@ import java.util.HashMap;
 
 
 public class Inventory {
-    private Map<Item, Integer> items;
+    private List<InventoryItem> items;
     private Player player;
 
     public Inventory(){
-        items = new HashMap<>();
+        items = new ArrayList<>();
     }
 
     public void addItem(Item item){
-        if(items.containsKey(item)){
-            items.put(item, items.get(item) + 1);
-        }else{
-            items.put(item, 1);
+        if(item.isStackable()){
+            for(InventoryItem inventoryItem : items){
+                if(inventoryItem.getItem().equals(item)){
+                    inventoryItem.increaseQuantity();
+                    return;
+                }
+            }
         }
+
+        items.add(new InventoryItem(item,1));
     }
 
    /*
@@ -47,13 +52,12 @@ public class Inventory {
 
         StringBuilder text = new StringBuilder();
 
-        for(Map.Entry<Item, Integer> entry : items.entrySet()){
-            Item item = entry.getKey();
-            int quantity = entry.getValue();
+        for(InventoryItem inventoryItem : items){
 
-            text.append(item.getName())
+
+            text.append(inventoryItem.getItem().getName())
                     .append(" x ")
-                    .append(quantity)
+                    .append(inventoryItem.getQuantity())
                     .append("\n");
         }
 
@@ -61,22 +65,33 @@ public class Inventory {
     }
 
     public boolean hasItem(Item item){
-        return items.containsKey(item);
+
+        for(InventoryItem inventoryItem : items){
+
+            if(inventoryItem.getItem().equals(item)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean removeItem(Item item){
-       if(!(items.containsKey(item))){
-           return false;
-        }
-        int quantity = items.get(item);
+     Iterator<InventoryItem> iterator = items.iterator();
 
-       if(quantity > 1){
-           items.put(item, quantity-1);
-       }else{
-           items.remove(item);
-       }
+     while(iterator.hasNext()){
+         InventoryItem inventoryItem = iterator.next();
 
-       return true;
+         if(inventoryItem.getItem().equals(item)){
+             if(inventoryItem.getQuantity() > 1){
+                 inventoryItem.decreaseQuantity();
+             }else{
+                 iterator.remove();
+             }
+
+             return true;
+         }
+     }
+     return false;
     }
 
 }

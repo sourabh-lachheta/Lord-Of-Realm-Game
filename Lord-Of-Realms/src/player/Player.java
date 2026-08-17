@@ -64,10 +64,20 @@ public class Player {
         }
     }
 
-    public void takeDamage(){
+    public void takeDamage(int amount){
+
+        hp -= amount;
+        if(hp < 0){
+            hp = 0;
+        }
 
     }
-    public void heal(){
+    public void heal(int amount){
+
+        hp += amount;
+        if(hp > maxHp){
+            hp = maxHp;
+        }
 
     }
     public void gainQi(){

@@ -31,6 +31,10 @@ public class GameWindow extends JFrame {
     private JPanel mainPanel;
 
     //Status  panel...
+    private JPanel topPanel;
+    private JPanel inventoryPanel;
+    private JTextArea inventoryTextArea;
+    private JScrollPane inventoryScrollPane;
     private JPanel statusPanel;
     private JLabel nameLabel;
     private JLabel realmLabel;
@@ -53,8 +57,7 @@ public class GameWindow extends JFrame {
     private JButton choice4Button;
 
 
-    // Inventory.....
-    private JLabel inventoryLabel;
+
 
     private Player player;
     private StoryManager storyManager;
@@ -92,27 +95,47 @@ public class GameWindow extends JFrame {
     }
 
     private void handleChoice(int choiceIndex){
-        storyManager.selectChoice(choiceIndex);
-
-        updateScene();
-        updateInventory();
-        updatePlayerInfo();
+       boolean success =  storyManager.selectChoice(choiceIndex);
+        if(success) {
+            updateScene();
+            updateInventory();
+            updatePlayerInfo();
+        }else{
+            setStoryText(storyManager.getLastMessage());
+        }
     }
 
 
     // layouts,fonts,colors,borders, sizes etc.......
     private void layoutComponents() {
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(statusPanel, BorderLayout.NORTH);
+      //  mainPanel.add(statusPanel, BorderLayout.NORTH);
+
+
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(statusPanel, BorderLayout.WEST);
+        topPanel.add(inventoryPanel,BorderLayout.CENTER);
+
+        mainPanel.add(topPanel,BorderLayout.NORTH);
         mainPanel.add(storyPanel, BorderLayout.CENTER);
         mainPanel.add(choicePanel, BorderLayout.SOUTH);
         add(mainPanel);
+
+
+
 
         statusPanel.setBackground(Color.RED);
         storyPanel.setBackground(Color.BLUE);
         choicePanel.setBackground(Color.GREEN);
 
         // status panel...
+
+        inventoryPanel.setLayout(new BorderLayout());
+        inventoryPanel.add(inventoryScrollPane, BorderLayout.CENTER);
+
+        statusPanel.setLayout(
+                new BoxLayout(statusPanel,BoxLayout.Y_AXIS)
+        );
         nameLabel.setFont(new Font("font",Font.PLAIN,16));
         statusPanel.add(nameLabel);
         realmLabel.setFont(new Font("font",Font.PLAIN,16));
@@ -124,8 +147,8 @@ public class GameWindow extends JFrame {
         expLabel.setFont(new Font("font",Font.PLAIN,16));
         statusPanel.add(expLabel);
 
-        inventoryLabel.setFont(new Font("font",Font.PLAIN,16));
-        statusPanel.add(inventoryLabel);
+       // inventoryLabel.setFont(new Font("font",Font.PLAIN,16));
+       // statusPanel.add(inventoryLabel);
 
         // story panel...
         storyPanel.setLayout(new BorderLayout());
@@ -155,7 +178,17 @@ public class GameWindow extends JFrame {
         qiLabel = new JLabel();
         expLabel = new JLabel();
 
-        inventoryLabel = new JLabel("Inventory : Empty");
+       // inventoryLabel = new JLabel("Inventory : Empty");
+
+        topPanel = new JPanel();
+        inventoryPanel = new JPanel();
+
+        inventoryTextArea = new JTextArea();
+        inventoryTextArea.setEditable(false);
+        inventoryTextArea.setLineWrap(true);
+        inventoryTextArea.setWrapStyleWord(true);
+
+        inventoryScrollPane = new JScrollPane(inventoryTextArea);
 
         //story panel....
         storyPanel = new JPanel();
@@ -237,10 +270,9 @@ public class GameWindow extends JFrame {
 
     private void updateInventory(){
 
-        inventoryLabel.setText(
-                "<html>Inventory:<br>" +
-                player.getInventory().getItemsText().replace("\n","<br>") +
-                "</html>"
+        inventoryTextArea.setText(
+                "Inventory:" +
+                player.getInventory().getItemsText()
         );
     }
 

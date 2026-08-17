@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import inventory.Item;
+import inventory.ItemDatabase;
 import player.Player;
 
 
@@ -17,6 +18,7 @@ public class StoryManager {
     private Map<Integer, StoryScene> scenes;
     private StoryScene currentScene;
     private Player player;
+    private String lastMessage;
 
     public StoryManager(Player player){
         scenes = new HashMap<>();
@@ -33,8 +35,15 @@ public class StoryManager {
 
     }
 
-    public void selectChoice(int choiceIndex){
+    public boolean selectChoice(int choiceIndex){
         Choice selectedChoice = currentScene.getChoices().get(choiceIndex);
+
+        Item requiredItem = selectedChoice.getRequiredItem();
+
+        if(requiredItem != null && !player.hasItem(requiredItem)){
+            lastMessage = "you need : " + requiredItem.getName();
+            return false;
+        }
 
         Item reward = selectedChoice.getReward();
 
@@ -45,6 +54,12 @@ public class StoryManager {
         int nextSceneId = selectedChoice.getNextSceneId();
         goToScene(nextSceneId);
 
+        return true;
+
+    }
+
+    public String getLastMessage(){
+        return lastMessage;
     }
 
     public StoryScene getCurrentScene(){
@@ -77,8 +92,8 @@ public class StoryManager {
                 2,
                 "Towering trees surround you. Nearby, you notice a broken sword half-buried in the soil"
         );
-
-        scene2.addChoice(new Choice("Pick up the sword",6,new Item("Rusty Sword",false)));
+       // Item key = new Item("Key",false);
+        scene2.addChoice(new Choice("Pick up the sword",6,ItemDatabase.RUSTY_SWORD,null));
         scene2.addChoice(new Choice("Return",1));
         scene2.addChoice(new Choice("Go Forward", 7));
         addScene(scene2);
@@ -120,8 +135,8 @@ public class StoryManager {
                 7,
                 "you see herb"
         );
-        Item herb = new Item("healing Herb",true);
-        scene7.addChoice(new Choice("Take the herb", 9,herb));
+
+        scene7.addChoice(new Choice("Take the herb", 9, ItemDatabase.HEALING_HERB,null));
         scene7.addChoice(new Choice("Go Forward", 10 ));
         addScene(scene7);
 
@@ -140,7 +155,7 @@ public class StoryManager {
                 "found another healing item"
         );
 
-        scene10.addChoice(new Choice("Take the herb", 12,herb));
+        scene10.addChoice(new Choice("Take the herb", 12,ItemDatabase.HEALING_HERB,null));
         scene10.addChoice(new Choice("Go Forward",13));
         addScene(scene10);
 

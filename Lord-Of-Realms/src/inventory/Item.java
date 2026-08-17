@@ -4,10 +4,23 @@ public class Item {
 
     private String name;
     private boolean stackable;
+    private int healAmount;
 
     public Item(String name, boolean stackable){
+       // this.name = name;
+        //this.stackable = stackable;
+
+        this(name, stackable, 0);
+    }
+
+    public Item(String name, boolean stackable, int healAmount){
         this.name = name;
         this.stackable = stackable;
+        this.healAmount = healAmount;
+    }
+
+    public int getHealAmount(){
+        return healAmount;
     }
 
     public String getName(){
@@ -26,16 +39,16 @@ public class Item {
 
         Item other = (Item) obj;
 
-        return name.equals(other.name);
+        return name.equals(other.name) && stackable == other.stackable;
     }
 
 
     @Override
     public int hashCode(){
-        return name.hashCode();
+        return 31 *  name.hashCode() + Boolean.hashCode(stackable);
     }
 
     public boolean isStackable(){
-        return stackable;
+        return  stackable;
     }
 }

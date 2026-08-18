@@ -109,6 +109,15 @@ public class Player {
         return inventory.removeItem(item);
     }
 
+    public boolean useItem(Item item){
+        if(!hasItem(item)){
+            return false;
+        }
+
+        removeItem(item);
+        return true;
+    }
+
 
 
 }

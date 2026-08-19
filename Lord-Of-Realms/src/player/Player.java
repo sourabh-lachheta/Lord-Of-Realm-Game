@@ -12,6 +12,8 @@ public class Player {
     private int maxQi;
     private int exp;
     private int realm;
+    private int attack;
+    private int defense;
 
     private Inventory inventory;
 
@@ -27,6 +29,9 @@ public class Player {
 
         exp = 0;
         realm = 1;
+
+        attack = 10;
+        defense = 5;
 
         inventory = new Inventory();
 
@@ -64,6 +69,26 @@ public class Player {
         }
     }
 
+    public int getCombaTAttack(){
+        int realmBonus = 0;
+
+        switch (realm){
+            case 1:
+                realmBonus = 0;
+                break;
+
+            case 2:
+                realmBonus = 10;
+                break;
+
+            case 3:
+                realmBonus = 20;
+                break;
+
+        }
+        return attack + realmBonus;
+    }
+
     public void takeDamage(int amount){
 
         hp -= amount;
@@ -83,12 +108,18 @@ public class Player {
     public void gainQi(){
 
     }
+
+
     public void consumeQi(){
 
     }
-    public void gainExp(){
 
+
+    public void gainExp(int amount){
+        exp += amount;
     }
+
+
     public void breakthrough(){
 
     }
@@ -101,13 +132,16 @@ public class Player {
         inventory.addItem(item);
     }
 
+
     public boolean hasItem(Item item){
         return inventory.hasItem(item);
     }
 
+
     public boolean removeItem(Item item){
         return inventory.removeItem(item);
     }
+
 
     public boolean useItem(Item item){
         if(!hasItem(item)){
@@ -122,6 +156,21 @@ public class Player {
             removeItem(item);
         }
         return true;
+    }
+
+
+    public boolean isAlive(){
+        return hp > 0;
+    }
+
+
+    public int getAttack(){
+        return attack;
+    }
+
+
+    public int getDefense(){
+        return defense;
     }
 
 

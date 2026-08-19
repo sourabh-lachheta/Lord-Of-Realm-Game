@@ -1,5 +1,7 @@
 package game;
 
+import combat.CombatManager;
+import combat.Enemy;
 import inventory.Item;
 import inventory.ItemDatabase;
 import player.Player;
@@ -22,7 +24,22 @@ public class Game {
 
 
 
-      
+        Player player = new Player();
+
+        Enemy wolf = new Enemy(
+                "Wolf",
+                50,
+                8,
+                25
+        );
+
+        CombatManager combat = new CombatManager(player, wolf);
+
+        combat.startCombat();
+
+        while (!combat.isCombatOver()) {
+            combat.playerAttack();
+        }
 
 
 

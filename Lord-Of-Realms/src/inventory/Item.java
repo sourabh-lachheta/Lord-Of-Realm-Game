@@ -5,18 +5,24 @@ public class Item {
     private String name;
     private boolean stackable;
     private int healAmount;
+    private boolean consumable;
 
     public Item(String name, boolean stackable){
        // this.name = name;
         //this.stackable = stackable;
 
-        this(name, stackable, 0);
+        this(name, stackable, 0,false);
     }
 
-    public Item(String name, boolean stackable, int healAmount){
+    public Item(String name, boolean stackable, int healAmount, boolean consumable){
         this.name = name;
         this.stackable = stackable;
         this.healAmount = healAmount;
+        this.consumable = consumable;
+    }
+
+    public boolean isConsumable(){
+        return consumable;
     }
 
     public int getHealAmount(){

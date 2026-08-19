@@ -114,7 +114,13 @@ public class Player {
             return false;
         }
 
-        removeItem(item);
+        if(item.getHealAmount() > 0){
+            heal(item.getHealAmount());
+        }
+
+        if(item.isConsumable()) {
+            removeItem(item);
+        }
         return true;
     }
 

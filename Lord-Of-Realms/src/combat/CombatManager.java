@@ -1,15 +1,21 @@
 package combat;
 
+import inventory.Item;
 import player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CombatManager {
 
     private Player player;
     private Enemy enemy;
+    private List<CombatAction> actions;
 
     public CombatManager(Player player, Enemy enemy){
         this.player = player;
         this.enemy = enemy;
+        actions = new ArrayList<>();
     }
 
     public Player getPlayer(){
@@ -24,52 +30,90 @@ public class CombatManager {
 
     public void startCombat(){
         System.out.println(player.getName() + " vs " + enemy.getName());
+        initializeActions();
     }
 
-    public void playerAttack(){
+    public String playerAttack(){
 
-        int damage = player.getCombaTAttack();
+        int damage = player.getCombatAttack();
 
         enemy.takeDamage(damage);
 
-        System.out.println(player.getName() + " attacks " + enemy.getName());
-        System.out.println("Damage  " + damage);
-        System.out.println(
-                enemy.getName() + "HP: "
-                + enemy.getHp() + "/" + enemy.getMaxHp()
-        );
+        String result =
+                player.getName() + " attacks " + enemy.getName() + "\n" +
+                        "Damage: " + damage + "\n\n" +
+                        enemy.getName() + " HP: " +
+                        enemy.getHp() + "/" + enemy.getMaxHp();
 
         if(!enemy.isAlive()){
-            System.out.println(enemy.getName() + " has been defeated! ");
-
             player.gainExp(enemy.getExpReward());
 
-            System.out.println("Exp gained: " + enemy.getExpReward());
-            return;
+            result += "\n\n" +
+                    enemy.getName() + " has been defeated!\n" +
+                    "Exp gained: " + enemy.getExpReward();
+
+            return result;
         }
-        enemyAttack();
+        result += "\n\n" + enemyAttack();
+        return result;
     }
 
 
-    private void enemyAttack(){
+    private String enemyAttack(){
 
         int damage = enemy.getAttack();
 
         player.takeDamage(damage);
 
-        System.out.println(enemy.getName() + " attacks " + player.getName());
-        System.out.println("Damage: " + damage);
-        System.out.println(
-                player.getName() + " HP: "
-                + player.getHealthText()
-        );
+
+        String result =
+                enemy.getName() + " attacks " +
+                        player.getName() + "\n" +
+                        "Damage: " + damage + "\n\n" +
+                        player.getName() + " HP: " +
+                        player.getHealthText();
 
         if(!player.isAlive()){
-            System.out.println(player.getName() + " has been defeated!");
+            result += "\n\n" +
+                    player.getName() +
+                    " has been defeated!";
         }
+        return result;
     }
 
     public boolean isCombatOver(){
         return !player.isAlive() || !enemy.isAlive();
+    }
+
+
+    public boolean playerUseItem(Item item){
+
+        if(isCombatOver()){
+            return false;
+        }
+
+        boolean used = player.useItem(item);
+
+        if(!used){
+            return false;
+        }
+
+        enemyAttack();
+
+        return true;
+    }
+
+    public void initializeActions(){
+
+        actions.clear();
+
+        actions.add(new CombatAction("Attack"));
+        actions.add(new CombatAction("use Item"));
+        actions.add(new CombatAction("Run"));
+
+    }
+
+    public List<CombatAction> getActions(){
+        return actions;
     }
 }

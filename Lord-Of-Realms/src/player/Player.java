@@ -69,12 +69,12 @@ public class Player {
         }
     }
 
-    public int getCombaTAttack(){
+    public int getCombatAttack(){
         int realmBonus = 0;
 
         switch (realm){
             case 1:
-                realmBonus = 0;
+                realmBonus = 18;
                 break;
 
             case 2:

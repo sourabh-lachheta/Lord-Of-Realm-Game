@@ -14,13 +14,20 @@
 
 
 package ui;
+import combat.CombatAction;
+import combat.CombatManager;
+import combat.CombatProfile;
+import combat.Enemy;
+import inventory.Item;
 import player.Player;
 import story.Choice;
+import story.ChoiceType;
 import story.StoryManager;
 import story.StoryScene;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameWindow extends JFrame {
@@ -61,6 +68,9 @@ public class GameWindow extends JFrame {
 
     private Player player;
     private StoryManager storyManager;
+    private CombatManager combatManager;
+    private Choice combatChoice;
+    private boolean inCombat;
 
     public GameWindow(Player player, StoryManager storyManager){
         this.player = player;
@@ -84,17 +94,68 @@ public class GameWindow extends JFrame {
 
     private void registerListeners() {
 
-        choice1Button.addActionListener( e-> handleChoice(0));
+        choice1Button.addActionListener( e-> handleButtonClick(0));
 
-        choice2Button.addActionListener(e -> handleChoice(1));
+        choice2Button.addActionListener(e -> handleButtonClick(1));
 
-        choice3Button.addActionListener( e-> handleChoice(2));
+        choice3Button.addActionListener( e-> handleButtonClick(2));
 
-        choice4Button.addActionListener( e-> handleChoice(3));
+        choice4Button.addActionListener( e-> handleButtonClick(3));
 
     }
 
+    private void handleButtonClick(int buttonIndex) {
+
+        if (inCombat) {
+            handleCombatAction(buttonIndex);
+        } else {
+            handleChoice(buttonIndex);
+        }
+    }
+
+    private void handleCombatAction(int actionIndex){
+        if(actionIndex == 0) {
+            String result = combatManager.playerAttack();
+
+            setStoryText(result);
+
+            updatePlayerInfo();
+
+            if (combatManager.isCombatOver()) {
+                inCombat = false;
+                int nextSceneId = combatChoice.getNextSceneId();
+                storyManager.completeCombat(nextSceneId);
+
+                updateScene();
+                updatePlayerInfo();
+            }
+        }
+    }
+
+    private void hideCombatActions() {
+
+        JButton[] buttons = {
+                choice1Button,
+                choice2Button,
+                choice3Button,
+                choice4Button
+        };
+
+        for (JButton button : buttons) {
+            button.setVisible(false);
+        }
+    }
+
     private void handleChoice(int choiceIndex){
+
+        StoryScene scene = storyManager.getCurrentScene();
+        Choice choice = scene.getChoices().get(choiceIndex);
+
+        if(choice.getType() == ChoiceType.COMBAT){
+            enterCombat(choice);
+            return;
+        }
+
        boolean success =  storyManager.selectChoice(choiceIndex);
         if(success) {
             updateScene();
@@ -103,6 +164,35 @@ public class GameWindow extends JFrame {
         }else{
             setStoryText(storyManager.getLastMessage());
         }
+    }
+    // temp
+    private void enterCombat(Choice choice) {
+
+        inCombat = true;
+
+        combatChoice = choice;
+
+        combatManager = new CombatManager(player,choice.getEnemy());
+
+        combatManager.startCombat();
+
+        showCombatStart();
+
+        setCombatActions(combatManager.getActions());
+
+    }
+
+    private void showCombatStart() {
+
+        Enemy enemy = combatManager.getEnemy();
+
+        setStoryText(
+                enemy.getName() + " appears!\n\n" +
+                        enemy.getName() + " HP: " +
+                        enemy.getHp() + "/" + enemy.getMaxHp() + "\n\n" +
+                        player.getName() + " HP: " +
+                        player.getHealthText()
+        );
     }
 
 
@@ -223,6 +313,7 @@ public class GameWindow extends JFrame {
 
 
     public void setStoryText(String text){
+       
         storyTextArea.setText(text);
     }
 
@@ -244,6 +335,28 @@ public class GameWindow extends JFrame {
             }
         }
     }
+
+    private void setCombatActions(List<CombatAction> actions) {
+
+        JButton[] buttons = {
+                choice1Button,
+                choice2Button,
+                choice3Button,
+                choice4Button
+        };
+
+        for (int i = 0; i < buttons.length; i++) {
+
+            if (i < actions.size()) {
+                buttons[i].setText(actions.get(i).getName());
+                buttons[i].setVisible(true);
+            } else {
+                buttons[i].setVisible(false);
+            }
+        }
+    }
+
+
 
     private void updateScene() {
 
@@ -275,6 +388,9 @@ public class GameWindow extends JFrame {
                 player.getInventory().getItemsText()
         );
     }
+
+
+
 
 
 

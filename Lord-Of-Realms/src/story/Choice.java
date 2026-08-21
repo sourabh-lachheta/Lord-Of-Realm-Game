@@ -9,6 +9,7 @@
 
 package story;
 
+import combat.Enemy;
 import inventory.Item;
 
 public class Choice {
@@ -18,6 +19,9 @@ public class Choice {
 
     private Item reward;
     private Item requiredItem;
+    private Enemy enemy;
+
+    private ChoiceType type;
 
 
 
@@ -26,13 +30,26 @@ public class Choice {
         this.nextSceneId = nextSceneId;
         this.reward = null;
         this.requiredItem = null;
+        this.type = ChoiceType.NORMAL;
     }
+
+
     // overloading for items
     public Choice(String text, int nextSceneId,Item reward, Item requiredItem){
         this.text = text;
         this.nextSceneId = nextSceneId;
         this.reward = reward;
         this.requiredItem = requiredItem;
+        this.type = ChoiceType.REWARD;
+    }
+
+
+    // overloading for choice
+    public Choice(String text, int nextSceneId, Enemy enemy){
+        this.text = text;
+        this.nextSceneId = nextSceneId;
+        this.enemy = enemy;
+        this.type = ChoiceType.COMBAT;
     }
     public int getNextSceneId(){
         return nextSceneId;
@@ -50,5 +67,13 @@ public class Choice {
 
     public Item getRequiredItem(){
         return requiredItem;
+    }
+
+    public Enemy getEnemy(){
+        return enemy;
+    }
+
+    public ChoiceType getType(){
+        return type;
     }
 }

@@ -4,16 +4,15 @@ public class Enemy {
 
     private String name;
     private int hp;
-    private int maxHp;
-    private int attack;
-    private int expReward;
+   // private int maxHp;
+   // private int attack;
+   // private int expReward;
+    private CombatProfile combatProfile;
 
-    public Enemy(String name, int hp, int attack, int expReward){
+    public Enemy(String name,CombatProfile combatProfile){
         this.name = name;
-        this.hp = hp;
-        this.maxHp = hp;
-        this.attack = attack;
-        this.expReward = expReward;
+        this.hp = combatProfile.getMaxHp();
+        this.combatProfile = combatProfile;
     }
 
     public String getName(){
@@ -25,11 +24,11 @@ public class Enemy {
     }
 
     public int getMaxHp(){
-        return maxHp;
+        return combatProfile.getMaxHp();
     }
 
     public int getAttack(){
-        return attack;
+        return combatProfile.getAttack();
     }
 
     public void takeDamage(int damage){
@@ -45,6 +44,6 @@ public class Enemy {
     }
 
     public int getExpReward(){
-        return expReward;
+        return combatProfile.getExpReward();
     }
 }

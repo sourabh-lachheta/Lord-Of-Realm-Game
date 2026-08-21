@@ -9,6 +9,8 @@ import java.util.Map;
 import inventory.Item;
 import inventory.ItemDatabase;
 import player.Player;
+import combat.CombatProfile;
+import combat.Enemy;
 
 
 
@@ -72,7 +74,19 @@ public class StoryManager {
 
     }
 
+    public void completeCombat(int nextSceneId){
+        goToScene(nextSceneId);
+    }
+
     private void initializeStory(){
+        // temp
+        CombatProfile wolfProfile =
+                new CombatProfile(80, 15, 5, 30);
+
+        Enemy wolf =
+                new Enemy("Wolf", wolfProfile);
+
+
 
         StoryScene scene1 = new StoryScene(
                 1,
@@ -138,6 +152,7 @@ public class StoryManager {
 
         scene7.addChoice(new Choice("Take the herb", 9, ItemDatabase.HEALING_HERB,null));
         scene7.addChoice(new Choice("Go Forward", 10 ));
+        scene7.addChoice(new Choice("Fight the Wolf", 10, wolf));
         addScene(scene7);
 
         StoryScene scene9 = new StoryScene(
@@ -152,7 +167,7 @@ public class StoryManager {
 
         StoryScene scene10 = new StoryScene(
                 10,
-                "found another healing item"
+                "you defated wolf found another healing item"
         );
 
         scene10.addChoice(new Choice("Take the herb", 12,ItemDatabase.HEALING_HERB,null));
